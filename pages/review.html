@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Heritage Place Reviews</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+      background-image: url('../images/login_background.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    .container {
+      background: #f3eeee28;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    textarea, input, select {
+      width: 95%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #047c08;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .star-rating {
+      direction: rtl;
+      display: inline-flex;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .star {
+      color: #ccc;
+      cursor: pointer;
+    }
+    .star.hover, .star.selected {
+      color: gold;
+    }
+    .heritage-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .review-card {
+      background: #f9f9f9;
+      padding: 15px;
+      margin-top: 15px;
+      border-left: 5px solid #007BFF;
+      border-radius: 10px;
+    }
+    .review-card button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Heritage Place Reviews & Ratings</h2>
+  <div class="container">
+    <form id="reviewForm">
+      <label for="place">Select Heritage Place:</label>
+      <select id="place" required onchange="showImage()">
+        <option value="" disabled selected>Select a place</option>
+        <option value="Hampi">Hampi</option>
+        <option value="Pattadakal">Pattadakal</option>
+        <option value="Badami">Badami</option>
+      </select>
+      <img id="placeImage" class="heritage-img" src="" alt="" style="display:none;">
+
+      <input type="text" id="name" placeholder="Your Name" required>
+
+      <div class="star-rating" id="starContainer">
+        <span class="star" data-value="5">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="1">&#9733;</span>
+      </div>
+      <input type="hidden" id="rating" required>
+
+      <textarea id="message" placeholder="Write your review..." required></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
+
+    <hr>
+    <h3>All Reviews</h3>
+    <button onclick="downloadCSV()">Download Reviews</button>
+    <div id="reviewsList"></div>
+  </div>
+
+  <script>
+    const imageMap = {
+      "Hampi": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Vittala_Temple%2C_Hampi.jpg/800px-Vittala_Temple%2C_Hampi.jpg",
+      "Pattadakal": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Pattadakal_group_of_monuments.jpg/800px-Pattadakal_group_of_monuments.jpg",
+      "Badami": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Badami_Cave_Temples%2C_Karnataka.jpg/800px-Badami_Cave_Temples%2C_Karnataka.jpg"
+    };
+
+    let selectedRating = 0;
+    const stars = document.querySelectorAll(".star");
+
+    stars.forEach(star => {
+      star.addEventListener("mouseover", () => {
+        const val = parseInt(star.getAttribute("data-value"));
+        highlightStars(val);
+      });
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating);
+      });
+      star.addEventListener("click", () => {
+        selectedRating = parseInt(star.getAttribute("data-value"));
+        document.getElementById("rating").value = selectedRating;
+      });
+    });
+
+    function highlightStars(rating) {
+      stars.forEach(star => {
+        const val = parseInt(star.getAttribute("data-value"));
+        star.classList.toggle("hover", val <= rating);
+        star.classList.toggle("selected", val <= rating);
+      });
+    }
+
+    function showImage() {
+      const place = document.getElementById("place").value;
+      const img = document.getElementById("placeImage");
+      img.src = imageMap[place];
+      img.style.display = "block";
+    }
+
+    function loadReviews() {
+      const reviews = JSON.parse(localStorage.getItem("heritageReviews") || "[]");
+      const container = document.getElementById("reviewsList");
+      container.innerHTML = "";
+
+      reviews.forEach((rev, index) => {
+        const div = document.createElement("div");
+        div.className = "review-card";
+        div.innerHTML = `
+          <strong>${rev.name}</strong> reviewed <b>${rev.place}</b><br>
+          <span style="color:gold;">${"&#9733;".repeat(rev.rating)}${"&#9734;".repeat(5 - rev.rating)}</span>
+          <p>${rev.message}</p>
+          <button onclick="deleteReview(${index})">Delete</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    document.getElementById("reviewForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const place = document.getElementById("place").value;
+      const rating = parseInt(document.getElementById("rating").value);
+      const message = document.getElementById("message").value;
+
+      if (!rating) {
+        alert("Please select a star rating.");
+        return;
+      }
+
+      const reviews = JSON.parse(localStorage.getItem("heritageReviews") || "[]");
+      reviews.push({ name, place, rating, message });
+      localStorage.setItem("heritageReviews", JSON.stringify(reviews));
+      
+      this.reset();
+      document.getElementById("placeImage").style.display = "none";
+      selectedRating = 0;
+      highlightStars(0);
+      loadReviews();
+    });
+
+    function deleteReview(index) {
+      const reviews = JSON.parse(localStorage.getItem("heritageReviews") || "[]");
+      reviews.splice(index, 1);
+      localStorage.setItem("heritageReviews", JSON.stringify(reviews));
+      loadReviews();
+    }
+
+    function downloadCSV() {
+      const reviews = JSON.parse(localStorage.getItem("heritageReviews") || "[]");
+
+      if (reviews.length === 0) {
+        alert("No reviews to export.");
+        return;
+      }
+
+      let csv = "Name,Place,Rating,Message\n";
+      reviews.forEach(review => {
+        csv += `"${review.name}","${review.place}",${review.rating},"${review.message.replace(/"/g, '""')}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "heritage_reviews.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    window.onload = loadReviews;
+  </script>
+</body>
+</html>

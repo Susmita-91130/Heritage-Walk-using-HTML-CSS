@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Place & Event Uploader</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+      background-image: url('../images/login_background.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 20px;
+
+
+    }
+    .container {
+      background: #f3eeee28;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      font-size: 35px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    textarea {
+      width: 95%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    input[type="file"] {
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #047c08;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #035507;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Upload a Place or Event</h2>
+  <form action="#" method="post" enctype="multipart/form-data">
+    <label for="place">Place Name:</label>
+    <input type="text" id="place" name="place" placeholder="e.g., Central Park" required>
+
+    <label for="event">Event Information:</label>
+    <textarea id="event" name="event" rows="4" placeholder="Describe the event..." required></textarea>
+
+    <label for="images">Upload Images:</label>
+    <input type="file" id="images" name="images[]" accept="image/*" multiple required>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+
+</body>
+</html>

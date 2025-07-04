@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>States</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('../images/login_background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            background-color: rgba(44, 42, 42, 0.795);
+            <img src=""
+            padding: 20px;
+            margin: 10px auto;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .place-name {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .button-group {
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 15px 25px;
+            margin: 10px;
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            background-color: #e68900;
+        }
+        h1{
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-bottom: 20px;
+
+        }
+        h2{
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-bottom: 20px;
+
+        }
+    </style>
+</head>
+<body>
+    <h1>Places in States</h1>
+    <div class="container">
+        <h2>Maharashtra</h2>
+        <div class="place-name"> Ajanta</div>
+        <div class="button-group">
+            <button class="button" onclick="window.open('//www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Ajanta_Caves&ved=2ahUKEwj62K_NqZeNAxW0bGwGHYZLCg0QFnoECAoQAQ&usg=AOvVaw1GUrI2b6qJ9qa5Lob7-6Zf')">Information</button>
+            <button class="button" onclick="showLocation('Ajanta', 'Maharashtra')">Location</button>
+        </div>
+        <div class="place-name"> Pandharpur</div>
+        <div class="button-group">
+            <button class="button" onclick="window.open('https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Pandharpur&ved=2ahUKEwivgPm3qpeNAxWPTGwGHRoZCegQFnoECAoQAQ&usg=AOvVaw1KX56XbuvupnDNGuUcUbs2')">Information</button>
+            <button class="button" onclick="showLocation('Pandharpur', 'Maharashtra')">Location</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Karnataka</h2>
+        <div class="place-name">Beluru</div>
+        <div class="button-group">
+            <button class="button" onclick="window.open('https://en.wikipedia.org/wiki/Belur,_Karnataka')">Information</button>
+            <button class="button" onclick="showLocation('Beluru', 'Karnataka')">Location</button>
+        </div>
+        <div class="place-name">Hampi</div>
+        <div class="button-group">
+            <button class="button" onclick="window.open('https://en.wikipedia.org/wiki/Hampi_(town)')">Information</button>
+            <button class="button" onclick="showLocation('Hampi', 'Karnataka')">Location</button>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <h2>Tamil Nadu</h2>
+        <div class="place-name">Rameswaram</div>
+        <div class="button-group">
+            <button class="button" onclick="window.open('https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Rameswaram&ved=2ahUKEwiTy4n5qpeNAxWyd2wGHalzHGAQFnoECEAQAQ&usg=AOvVaw24j4VnsYTcHzmFLPcKKPIz')">Information</button>
+            <button class="button" onclick="showLocation('Rameswaram', 'Tamil Nadu')">Location</button>
+        </div>
+        <div class="place-name">Mahabalipuram</div>
+        <div class="button-group">
+            <button class="button" onclick="window.open('https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://en.wikipedia.org/wiki/Group_of_Monuments_at_Mahabalipuram&ved=2ahUKEwj99c-rq5eNAxXKTGwGHbDPDaoQFnoECDMQAQ&usg=AOvVaw0EMalJ1bHcNAFhgLeFaUSN')">Information</button>
+            <button class="button" onclick="showLocation('Mahabalipuram', 'Tamil Nadu')">Location</button>
+        </div>
+
+    </div>
+
+    <script>
+        function showInfo(city, state) {
+            const info = `Details about ${city}, ${state}:
+- Famous for its culture and heritage.
+- Well-known tourist attractions.
+- Vibrant economy and lifestyle.`;
+            alert(info);
+        }
+
+        function showLocation(city, state) {
+            const query = `${city}, ${state}`;
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
